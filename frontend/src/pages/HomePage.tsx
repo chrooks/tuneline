@@ -14,45 +14,55 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="home-page">
+    <div className="app-layout fade-in">
       <header className="app-header">
-        <h1>Tuneline</h1>
-        <p className="tagline">Visualize your music journey through time</p>
+        <div className="container">
+          <h1 className="text-3xl font-bold text-light">Tuneline</h1>
+          <p className="text-lg text-light opacity-80">Visualize your music journey through time</p>
+        </div>
       </header>
 
-      <div className="content-container">
-        <div className="form-container">
-          <LastfmForm onSubmit={handleSubmit} isLoading={loading} />
+      <main className="app-content">
+        <div className="container">
+          <div className="card mb-6 slide-in-up">
+            <div className="card-body">
+              <LastfmForm onSubmit={handleSubmit} isLoading={loading} />
+            </div>
+          </div>
+
+          {loading && (
+            <div className="flex flex-col items-center justify-center p-8 text-center">
+              <div className="loading-spinner mb-4"></div>
+              <p className="text-lg text-secondary">Analyzing your Last.fm data. This may take a moment...</p>
+            </div>
+          )}
+
+          {error && hasSubmitted && !loading && (
+            <div className="alert alert-danger slide-in-up">
+              <h3 className="font-semibold mb-2">Error</h3>
+              <p>{error}</p>
+            </div>
+          )}
+
+          {analysisSummary && !loading && (
+            <div className="card shadow-lg slide-in-up">
+              <div className="card-body p-0">
+                <AnalysisResults analysis={analysisSummary} />
+              </div>
+            </div>
+          )}
         </div>
-
-        {loading && (
-          <div className="loading-container">
-            <div className="loading-spinner"></div>
-            <p>Analyzing your Last.fm data. This may take a moment...</p>
-          </div>
-        )}
-
-        {error && hasSubmitted && !loading && (
-          <div className="error-container">
-            <h3>Error</h3>
-            <p>{error}</p>
-          </div>
-        )}
-
-        {analysisSummary && !loading && (
-          <div className="results-container">
-            <AnalysisResults analysis={analysisSummary} />
-          </div>
-        )}
-      </div>
+      </main>
 
       <footer className="app-footer">
-        <p>
-          Tuneline &copy; {new Date().getFullYear()} | Powered by{' '}
-          <a href="https://www.last.fm/api" target="_blank" rel="noopener noreferrer">
-            Last.fm API
-          </a>
-        </p>
+        <div className="container">
+          <p className="text-sm text-light">
+            Tuneline &copy; {new Date().getFullYear()} | Powered by{' '}
+            <a href="https://www.last.fm/api" target="_blank" rel="noopener noreferrer" className="text-light hover:text-primary-light">
+              Last.fm API
+            </a>
+          </p>
+        </div>
       </footer>
     </div>
   );

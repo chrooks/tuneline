@@ -93,12 +93,24 @@ def create_scrobble(db: Session, scrobble: scrobble_schemas.ScrobbleCreate) -> S
     return db_scrobble
 
 def create_scrobbles(db: Session, scrobbles: List[Dict[str, Any]], user_id: int) -> List[Scrobble]:
-    """Create multiple scrobbles at once"""
+    """Create multiple scrobbles at once, avoiding duplicates"""
     db_scrobbles = []
     
     for scrobble_data in scrobbles:
         # Add user_id to each scrobble
         scrobble_data["user_id"] = user_id
+        
+        # Check if this scrobble already exists
+        existing_scrobble = db.query(Scrobble).filter(
+            Scrobble.user_id == user_id,
+            Scrobble.artist == scrobble_data["artist"],
+            Scrobble.track == scrobble_data["track"],
+            Scrobble.listened_at == scrobble_data["listened_at"]
+        ).first()
+        
+        if existing_scrobble:
+            # Skip this scrobble as it already exists
+            continue
         
         # Create Scrobble object
         db_scrobble = Scrobble(**scrobble_data)

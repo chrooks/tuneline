@@ -62,10 +62,18 @@ python -m app.db.init_db
 
 ## Running the Application
 
+**Important**: Always make sure the virtual environment is activated before running the server. If you see a `ModuleNotFoundError` for packages like `pydantic_settings`, it's likely because the virtual environment is not activated.
+
 Start the development server:
 
 ```bash
+# Make sure you're in the backend directory
 cd backend
+
+# Activate the virtual environment (if not already activated)
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Start the server
 uvicorn app.main:app --reload
 ```
 

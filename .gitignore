@@ -82,8 +82,11 @@ alembic/versions/__pycache__/
 
 # Logs
 logs
-*.log
 
 # OS specific
 .DS_Store
 Thumbs.db
+
+
+memory-bank/
+.clinerules
